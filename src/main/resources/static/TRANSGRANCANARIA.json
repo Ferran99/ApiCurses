@@ -1,0 +1,82 @@
+[
+  {
+    "order": 1,
+    "name": "9",
+    "dist": "25 km",
+    "speed": "25 min/km",
+    "gap_time": "15:44:20",
+    "gap_dist": ""
+  },
+  {
+    "order": 2,
+    "name": "37",
+    "dist": "10 km",
+    "speed": "10 min/km",
+    "gap_time": "16:33:45",
+    "gap_dist": "0"
+  },
+  {
+    "order": 3,
+    "name": "54",
+    "dist": "10 km",
+    "speed": "600 min/km",
+    "gap_time": "+",
+    "gap_dist": "0,04"
+  },
+  {
+    "order": 4,
+    "name": "212",
+    "dist": "12,2 km",
+    "speed": "6,25 min/km",
+    "gap_time": "+1:35:03",
+    "gap_dist": "-12,14"
+  },
+  {
+    "order": 5,
+    "name": "116",
+    "dist": "0 km",
+    "speed": "0 min/km",
+    "gap_time": "+0:06",
+    "gap_dist": "0,04"
+  },
+  {
+    "order": 6,
+    "name": "796",
+    "dist": "0 km",
+    "speed": "0 min/km",
+    "gap_time": "+0:06",
+    "gap_dist": "0,04"
+  },
+  {
+    "order": 7,
+    "name": "559",
+    "dist": "0,1 km",
+    "speed": "15,04 min/km",
+    "gap_time": "+1:52:59",
+    "gap_dist": "-0,03"
+  },
+  {
+    "order": 10,
+    "name": "10",
+    "dist": "17,3 km",
+    "speed": "10,53 min/km",
+    "gap_time": "+3:32:20",
+    "gap_dist": "-17,26"
+  },
+  {
+    "order": 20,
+    "name": "2",
+    "dist": "27,9 km",
+    "speed": "17,14 min/km",
+    "gap_time": "+4:44:43",
+    "gap_dist": "-27,9"
+  },
+  {
+    "order": 20,
+    "name": "9",
+    "dist": "0 km",
+    "speed": "24 min/km",
+    "gap_time": "+",
+    "gap_dist": "0,04"
+  }
+]
