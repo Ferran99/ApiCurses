@@ -1,26 +1,25 @@
 package com.lallucana.API.Persentation.View;
 
-import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import com.lallucana.API.Business.Race.Runner;
 import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
-import com.lallucana.API.Persistance.HttpRequest;
 
 import java.util.List;
 
-public class VmixTop10 extends Vmix {
-
-
-    public VmixTop10(String server, Integer input) {
+public class VmixTop3 extends Vmix{
+    public VmixTop3(String server, Integer input) {
         super(server, input);
     }
+
+    /**
+     * @param runners
+     * @throws ErrorRequest
+     */
     @Override
     public void updateInput(List<Runner> runners) throws ErrorRequest {
-
         this.updateTitle(runners.get(0).getSex());
         for (Runner runner : runners) {
             this.updateRunner(runner);
         }
-
     }
 
     /**
@@ -28,11 +27,11 @@ public class VmixTop10 extends Vmix {
      * @throws ErrorRequest connection error
      */
     @Override
-    public void updateRunner(Runner runner) throws ErrorRequest {
+    protected void updateRunner(Runner runner) throws ErrorRequest {
         StringBuffer stringBuffer = new StringBuffer();
         String url = null;
         stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
+        stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
         stringBuffer.append("&SelectedName=Pos" + runner.getPosition() + ".Text&value=");
         stringBuffer.append(runner.getPosition());
@@ -40,18 +39,10 @@ public class VmixTop10 extends Vmix {
         this.getUrl(url);
         stringBuffer = new StringBuffer();
         stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
+        stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
         stringBuffer.append("&SelectedName=Nom" + runner.getPosition() + ".Text&value=");
-        stringBuffer.append(runner.getName()+ " "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Dors" + runner.getPosition() + ".Text&value=");
-        stringBuffer.append(runner.getDorsal());
+        stringBuffer.append(runner.getName() + " "+runner.getSurname());
         url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
         stringBuffer = new StringBuffer();
@@ -63,6 +54,7 @@ public class VmixTop10 extends Vmix {
         url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
         stringBuffer = new StringBuffer();
+
         stringBuffer.append(this.getServer());
         stringBuffer.append("/API/?Function=SetImage&Input=");
         stringBuffer.append(this.getInput());
@@ -70,6 +62,7 @@ public class VmixTop10 extends Vmix {
         stringBuffer.append(runner.getFlag());
         url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
+
     }
 
     /**
@@ -77,15 +70,9 @@ public class VmixTop10 extends Vmix {
      * @throws ErrorRequest connection error
      */
     @Override
-    public void updateTitle(String sex) throws ErrorRequest {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Cat.Text&value=");
-        stringBuffer.append((sex.equals("H") || sex.equals("M")) ? "MAN" : "WOMAN");
-        //Preper string buffer for URL request
-        String url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
+    protected void updateTitle(String sex) throws ErrorRequest {
+
     }
+
+
 }

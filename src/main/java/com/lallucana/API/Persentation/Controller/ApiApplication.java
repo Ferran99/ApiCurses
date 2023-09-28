@@ -13,23 +13,39 @@ import java.util.List;
 public class ApiApplication implements HttpObservable {
 
 
-	@GetMapping("/")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		this.updateHttp("/top/10/m");
-		return String.format("Hello %s!", name);
+	@GetMapping("/top")
+	public String hello(
+			@RequestParam(value = "number", defaultValue = "10") Integer number,
+			@RequestParam(value = "genre", defaultValue = "m") String genre)	{
+		updateRunners(genre.toUpperCase(),  number);
+		return String.format("Updating %s %d!", genre, number);
 	}
 
-
+	private void updateRunners(String genre, Integer number){
+		this.updateHttp(genre, number);
+	}
 
 	/**
 	 * Update http.
 	 *
-	 * @param http the http
+	 * @param genre the genre of the runners
+	 * @param number the number of runners
 	 */
 	@Override
-	public void updateHttp(String http) {
+	public void updateHttp(String genre, Integer number) {
 		for (HttpObserver httpObserver : this.httpObservers) {
-			httpObserver.updateHttp(http);
+			switch (number){
+				case 10:
+					httpObserver.updateHttpTop10(genre);
+					break;
+				case 5:
+					httpObserver.updateHttpTop5(genre);
+					break;
+				case 3:
+					httpObserver.updateHttpTop3(genre);
+					break;
+			}
+
 		}
 	}
 }

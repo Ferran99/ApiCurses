@@ -4,6 +4,7 @@ public class Runner {
     private Integer position;
 
     private String name;
+    private String surname;
     private Integer dorsal;
     private String country;
     private String club;
@@ -13,8 +14,9 @@ public class Runner {
 
 
 
-    public Runner(String name, Integer dorsal, String country, String club, String flag, String time, String sex, Integer position){
+    public Runner(String name, String surname, Integer dorsal, String country, String club, String flag, String time, String sex, Integer position){
         this.name = name;
+        this.surname = surname;
         this.dorsal = dorsal;
         this.country = country;
         this.club = club;
@@ -25,8 +27,9 @@ public class Runner {
     }
 
     public String getName() {
-        return name;
+        return name.toUpperCase();
     }
+    public String getSurname(){return this.surname.toUpperCase();}
     public Integer getDorsal() {
         return dorsal;
     }
@@ -52,4 +55,5 @@ public class Runner {
     public Integer getPosition(){
         return this.position;
     }
+
 }

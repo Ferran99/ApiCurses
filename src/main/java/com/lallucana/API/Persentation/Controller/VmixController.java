@@ -10,6 +10,8 @@ import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import com.lallucana.API.Business.Race.RunnerManager;
 import com.lallucana.API.Persentation.View.Vmix;
 import com.lallucana.API.Persentation.View.VmixTop10;
+import com.lallucana.API.Persentation.View.VmixTop3;
+import com.lallucana.API.Persentation.View.VmixTop5;
 import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
 
 import java.util.List;
@@ -22,17 +24,22 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
     private Boolean isTop10Woman = false;
     private Boolean isTop5Man = false;
     private Boolean isTop5Woman = false;
-    private Boolean isTop3Man = false;
-    private Boolean isTop3Woman = false;
+    private final Boolean isTop3Man = true;
 
     private final Integer TOP_10 = 10;
     private final Integer TOP_5 = 5;
     private final Integer TOP_3 = 3;
 
+    private final String MAN = "M";
+    private final String WOMAN = "F";
+
     private final RunnerGpsManager runnerGpsManager;
     private final DocumentManager documentManager;
     private Boolean isLiveTrail = true;
     private VmixTop10 vmixTop10;
+    private VmixTop5 vmixTop5;
+    private VmixTop3 vmixTop3M;
+    private  VmixTop3 vmixTopF;
     private RunnerManager runnerManager;
 
     /**
@@ -44,14 +51,17 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
      * @param isLiveTrail      the is live trail
      */
 
-    public VmixController(RunnerGpsManager runnerGpsManager, DocumentManager documentManager, ApiApplication apiApplication, Boolean isLiveTrail, Vmix vmix, RunnerManager runnerManager) {
+    public VmixController(RunnerGpsManager runnerGpsManager, DocumentManager documentManager, ApiApplication apiApplication, Boolean isLiveTrail, VmixTop10 vmixTop10, VmixTop5 vmixTop5, VmixTop3 vmixTop3M, VmixTop3 vmixTop3W, RunnerManager runnerManager) {
         this.runnerGpsManager = runnerGpsManager;
         this.documentManager = documentManager;
         this.runnerGpsManager.addRunnerGpsObserver(this);
         this.documentManager.addRunnerLiveTrailObserver(this);
         apiApplication.addHttpObserver(this);
         this.isLiveTrail = isLiveTrail;
-        this.vmixTop10 = (VmixTop10) vmix;
+        this.vmixTop10 = vmixTop10;
+        this.vmixTop5 = vmixTop5;
+        this.vmixTop3M = vmixTop3M;
+        this.vmixTopF = vmixTop3W;
         this.runnerManager = runnerManager;
     }
 
@@ -64,8 +74,6 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
             //System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10).toString());
         } else if (isTop5Man || isTop5Woman) {
             //System.out.println(this.documentManager.getRunners(isTop5Man, TOP_5).toString());
-        } else if (isTop3Man || isTop3Woman) {
-            //System.out.println(this.documentManager.getRunners(isTop3Man, TOP_3).toString());
         }
     }
 
@@ -76,8 +84,6 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
     public void updateLiveTrialRealTime() {
         List<RunnerLiveTrial> manTop5 = this.documentManager.getRunners(isTop5Man, TOP_5);
         List<RunnerLiveTrial> womanTop5 = this.documentManager.getRunners(isTop5Woman, TOP_5);
-        List<RunnerLiveTrial> manTop3 = this.documentManager.getRunners(isTop3Man, TOP_3);
-        List<RunnerLiveTrial> womanTop3 = this.documentManager.getRunners(isTop3Woman, TOP_3);
         //TODO: Update Vmix view
         System.out.println("Updating Vmix view");
     }
@@ -92,57 +98,86 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
         this.documentManager.combineRunners(runners);
     }
 
+
     /**
-     * Update http.
+     * Update top 10 runners.
      *
-     * @param http the http
+     * @param genre the genre of the runners
      */
     @Override
-    public void updateHttp(String http) {
-        System.out.println("HTTP request");
-        System.out.println(http);
-        switch (http) {
-            case "/top/10/m":
+    public void updateHttpTop10(String genre) {
+        switch (genre){
+            case MAN:
                 isTop10Man = true;
                 isTop10Woman = false;
-                if (this.isLiveTrail) {
-                    this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(isTop10Man, TOP_10));
-                    try {
-                        this.vmixTop10.updateInput(this.runnerManager.getRunners());
-                    } catch (ErrorRequest e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
                 break;
-            case "/top/10/f":
+            case WOMAN:
                 isTop10Man = false;
                 isTop10Woman = true;
-                if (this.isLiveTrail) System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10));
                 break;
-            case "/top/5/m":
+        }
+
+        if (this.isLiveTrail) {
+            this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(isTop10Man, TOP_10));
+            try {
+                this.vmixTop10.updateInput(this.runnerManager.getRunners());
+                System.out.println("Vimix updated top 10");
+            } catch (ErrorRequest e) {
+                System.out.println("Error updating top 10");
+            }
+        }
+    }
+
+    /**
+     * Update top 5 runners
+     *
+     * @param genre of the runners
+     */
+    @Override
+    public void updateHttpTop5(String genre) {
+        switch (genre){
+            case MAN:
                 isTop5Man = true;
                 isTop5Woman = false;
-                if (this.isLiveTrail) System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10));
-
                 break;
-            case "/top/5/f":
+            case WOMAN:
                 isTop5Man = false;
                 isTop5Woman = true;
-                if (this.isLiveTrail) System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10));
+                break;
+        }
+        if (this.isLiveTrail) {
+            this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(isTop5Man, TOP_5));
+            try {
+                this.vmixTop5.updateInput(this.runnerManager.getRunners());
+                System.out.println("Vimix updated top 5");
+            } catch (ErrorRequest e) {
+                System.out.println("Error updating top 5");
+            }
+        }
+    }
 
-                break;
-            case "/top/3/m":
-                isTop3Man = true;
-                isTop3Woman = false;
-                if (this.isLiveTrail) System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10));
-
-                break;
-            case "/top/3/f":
-                isTop3Man = false;
-                isTop3Woman = true;
-                if (this.isLiveTrail) System.out.println(this.documentManager.getRunners(isTop10Man, TOP_10));
-                break;
+    /**
+     * Update top 3 runners
+     *
+     * @param genre of the runners
+     */
+    @Override
+    public void updateHttpTop3(String genre) {
+        if (this.isLiveTrail) {
+            this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(isTop3Man, TOP_3));
+            try {
+                this.vmixTop3M.updateInput(this.runnerManager.getRunners());
+                System.out.println("Vimix updated top 3");
+            } catch (ErrorRequest e) {
+                System.out.println("Error updating top 3 M");
+            }
+            this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(!isTop3Man, TOP_3));
+            try {
+                this.vmixTopF.updateInput(this.runnerManager.getRunners());
+                System.out.println("Vimix updated");
+            } catch (ErrorRequest e) {
+                System.out.println("Error updating top 3 F");
+            }
         }
     }
 }

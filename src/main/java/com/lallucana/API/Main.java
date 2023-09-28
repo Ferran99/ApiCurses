@@ -4,6 +4,8 @@ import com.lallucana.API.Business.Race.RunnerManager;
 import com.lallucana.API.Persentation.Controller.ApiApplication;
 import com.lallucana.API.Persentation.View.Vmix;
 import com.lallucana.API.Persentation.View.VmixTop10;
+import com.lallucana.API.Persentation.View.VmixTop3;
+import com.lallucana.API.Persentation.View.VmixTop5;
 import org.springframework.boot.SpringApplication;
 import com.lallucana.API.Business.Race.Race;
 import com.lallucana.API.Business.LiveTrial.DocumentManager;
@@ -18,7 +20,11 @@ public class Main {
         String VMIX_SERVER = "http://192.168.100.100:8088";
 
         ApiApplication apiApplication = new ApiApplication();
-        VmixTop10 vmixTop10 = new VmixTop10(VMIX_SERVER, 10);
+        VmixTop10 vmixTop10 = new VmixTop10(VMIX_SERVER, 8);
+        VmixTop5 vmixTop5 = new VmixTop5(VMIX_SERVER, 11);
+        VmixTop3 vmixTop3M = new VmixTop3(VMIX_SERVER, 12);
+        VmixTop3 vmixTop3W = new VmixTop3(VMIX_SERVER, 13);
+
 
         //Create All the Races
         Race marathon = new Race(startUrlMarathon,pointUrlMarathon, "MIM");
@@ -29,7 +35,7 @@ public class Main {
         RunnerManager runnerManager = new RunnerManager();
 
         //Create All the Controllers
-        VmixController vmixController = new VmixController(runnerGpsManager, documentManager, apiApplication, true,vmixTop10, runnerManager);
+        VmixController vmixController = new VmixController(runnerGpsManager, documentManager, apiApplication, true,vmixTop10, vmixTop5, vmixTop3M,vmixTop3W, runnerManager);
         SpringApplication.run(ApiApplication.class, args);
     }
 }

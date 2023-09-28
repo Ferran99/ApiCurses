@@ -32,7 +32,8 @@ public interface HttpObservable {
     /**
      * Update http.
      *
-     * @param http the http
+     * @param genre the sex of the runners
+     * @param number the number of runners
      */
-    void updateHttp(String http);
+    void updateHttp(String genre, Integer number);
 }

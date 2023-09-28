@@ -17,7 +17,7 @@ public class RunnerManager {
         this.runners.clear();
         int pos = 1;
         for (RunnerLiveTrial runner : runnerLiveTrial) {
-            this.runners.add(new Runner(runner.getName() +runner.getSurname(), runner.getDorsal(), runner.getCountry(), runner.getClub(), runner.getCio(), runner.getTime(), runner.getSex(), pos));
+            this.runners.add(new Runner(runner.getName(), runner.getSurname(), runner.getDorsal(), runner.getCountry(), runner.getClub(), runner.getCio(), runner.getTime(), runner.getSex(), pos));
             pos++;
         }
     }
