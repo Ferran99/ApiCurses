@@ -20,4 +20,9 @@ public interface HttpObserver {
      * @param  genre of the runners
      */
     void updateHttpTop3(String genre);
+
+    /**
+     * Update Compere runners
+     */
+    void updateCompareRunners(Integer doss1, Integer doss2, Integer doss3);
 }

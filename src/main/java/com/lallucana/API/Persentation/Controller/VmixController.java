@@ -8,13 +8,13 @@ import com.lallucana.API.Business.LiveTrial.DocumentManager;
 import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrailObserver;
 import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import com.lallucana.API.Business.Race.RunnerManager;
-import com.lallucana.API.Persentation.View.Vmix;
-import com.lallucana.API.Persentation.View.VmixTop10;
-import com.lallucana.API.Persentation.View.VmixTop3;
-import com.lallucana.API.Persentation.View.VmixTop5;
+import com.lallucana.API.Persentation.View.*;
 import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 /**
  * The type Vmix controller.
@@ -40,7 +40,9 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
     private VmixTop5 vmixTop5;
     private VmixTop3 vmixTop3M;
     private  VmixTop3 vmixTopF;
+    private VmixIndividual vmixIndividual;
     private RunnerManager runnerManager;
+    private Thread threadRealTime = null;
 
     /**
      * Instantiates a new Vmix controller.
@@ -51,7 +53,9 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
      * @param isLiveTrail      the is live trail
      */
 
-    public VmixController(RunnerGpsManager runnerGpsManager, DocumentManager documentManager, ApiApplication apiApplication, Boolean isLiveTrail, VmixTop10 vmixTop10, VmixTop5 vmixTop5, VmixTop3 vmixTop3M, VmixTop3 vmixTop3W, RunnerManager runnerManager) {
+    public VmixController(RunnerGpsManager runnerGpsManager, DocumentManager documentManager,
+                          ApiApplication apiApplication, Boolean isLiveTrail, VmixTop10 vmixTop10, VmixTop5 vmixTop5,
+                          VmixTop3 vmixTop3M, VmixTop3 vmixTop3W, RunnerManager runnerManager, VmixIndividual vmixIndividual) {
         this.runnerGpsManager = runnerGpsManager;
         this.documentManager = documentManager;
         this.runnerGpsManager.addRunnerGpsObserver(this);
@@ -63,7 +67,9 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
         this.vmixTop3M = vmixTop3M;
         this.vmixTopF = vmixTop3W;
         this.runnerManager = runnerManager;
+        this.vmixIndividual = vmixIndividual;
     }
+
 
     /**
      * Update.
@@ -116,7 +122,6 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
                 isTop10Woman = true;
                 break;
         }
-
         if (this.isLiveTrail) {
             this.runnerManager.updateRunnersLiveTrial(this.documentManager.getRunners(isTop10Man, TOP_10));
             try {
@@ -178,6 +183,29 @@ public class VmixController implements RunnerLiveTrailObserver, RunnerGpsObserve
             } catch (ErrorRequest e) {
                 System.out.println("Error updating top 3 F");
             }
+        }
+    }
+
+    /**
+     * Update Compere runners
+     *
+     * @param doss1
+     * @param doss2
+     * @param doss3
+     */
+    @Override
+    public void updateCompareRunners(Integer doss1, Integer doss2, Integer doss3) {
+        if(this.isLiveTrail){
+            RunnerLiveTrial runner1 = this.documentManager.findRunner(doss1);
+            RunnerLiveTrial runner2 = this.documentManager.findRunner(doss2);
+            RunnerLiveTrial runner3 = this.documentManager.findRunner(doss3);
+            this.runnerManager.updateCompereRunnersLiveTrial(runner1, runner2, runner3);
+            try {
+                this.vmixIndividual.updateInput(this.runnerManager.getCompereRunnersLiveTrial());
+            } catch (ErrorRequest e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }

@@ -15,4 +15,11 @@ public class Point {
     @JacksonXmlProperty(localName = "nc")
     private String alternativeName;
 
+    public Object getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name.toUpperCase();
+    }
 }

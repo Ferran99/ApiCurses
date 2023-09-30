@@ -29,7 +29,7 @@ public abstract class Vmix extends HttpRequest {
 
     protected abstract void updateRunner(Runner runner) throws ErrorRequest;
 
-    protected abstract void updateTitle(String sex) throws ErrorRequest;
+    protected abstract void updateTitle(String sex, String puntDePas) throws ErrorRequest;
 }
 
 

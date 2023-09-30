@@ -36,4 +36,12 @@ public interface HttpObservable {
      * @param number the number of runners
      */
     void updateHttp(String genre, Integer number);
+
+    /**
+     * Update compare runners
+     * @param doss1 the dorsal of runner1
+     * @param doss2 the dorsal of runner2
+     * @param doss3 the dorsal
+     */
+    void updateHttpCompereRunners(Integer doss1, Integer doss2, Integer doss3);
 }

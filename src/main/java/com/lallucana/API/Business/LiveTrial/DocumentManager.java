@@ -6,6 +6,7 @@ import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrailObservable;
 import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrailObserver;
 import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import com.lallucana.API.Business.Race.Race;
+import com.lallucana.API.Business.Race.Runner;
 import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
 import com.lallucana.API.Persistance.Runner.RunnerDAO;
 import com.lallucana.API.Persistance.Runner.RunnerLiveTrailDAO;
@@ -81,7 +82,7 @@ public class DocumentManager implements RunnerLiveTrailObservable {
      * Update document every minute
      */
     private void updateDocument() {
-        long UPDATE_INTERVAL = 60000;
+        long UPDATE_INTERVAL = 30000;
         Document auxDocument;
         while (true) {
             try {
@@ -91,6 +92,11 @@ public class DocumentManager implements RunnerLiveTrailObservable {
                     if (!auxDocument.getRunners().equals(this.document.getRunners())) {
                         this.document = auxDocument;
                         for (RunnerLiveTrial runner : this.document.getRunners()) {
+                            for(Point point : this.document.getPoints()){
+                                if (point.getId().equals(runner.getLastPoint())){
+                                    runner.setPuntDePas(point.getName());
+                                }
+                            }
                             if (this.hashMapRunners.containsKey(runner.getDorsal())) {
                                 this.hashMapRunners.replace(runner.getDorsal(), runner);
                             }
@@ -178,5 +184,23 @@ public class DocumentManager implements RunnerLiveTrailObservable {
 
     public HashMap<Integer, RunnerLiveTrial> getRealTimeRunners() {
         return this.hashMapRunners;
+    }
+
+    public RunnerLiveTrial findRunner(Integer doss1) {
+        int posM = 1;
+        int posF = 1;
+        for(RunnerLiveTrial runnerLiveTrial: this.document.getRunners()){
+            if(runnerLiveTrial.getDorsal().equals(doss1)) {
+                runnerLiveTrial.setPosition(runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE)? posM : posF);
+                return runnerLiveTrial;
+            }
+
+            if(runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE)){
+                posM++;
+            }else {
+                posF++;
+            }
+        }
+        return null;
     }
 }

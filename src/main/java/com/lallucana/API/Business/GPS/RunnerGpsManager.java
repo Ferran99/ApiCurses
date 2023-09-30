@@ -34,7 +34,7 @@ public class RunnerGpsManager implements RunnerGpsObservable {
      * Update gps runners.
      */
     private void updateGpsRunners() {
-        long UPDATE_INTERVAL = 8000;
+        long UPDATE_INTERVAL = 30000;
         while (true) {
             try {
                 System.out.println("Updating GPS");

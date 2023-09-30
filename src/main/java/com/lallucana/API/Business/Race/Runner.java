@@ -11,19 +11,23 @@ public class Runner {
     private String flag;
     private String time;
     private String sex;
+    private String puntDePas;
 
 
 
-    public Runner(String name, String surname, Integer dorsal, String country, String club, String flag, String time, String sex, Integer position){
+    public Runner(String name, String surname, Integer dorsal, String country,
+                  String club, String flag, String time, String sex,
+                  Integer position, String puntDePas){
         this.name = name;
         this.surname = surname;
         this.dorsal = dorsal;
-        this.country = country;
+        this.country =  dorsal.equals(1) ? "ESP" : country;
         this.club = club;
-        this.flag = flag;
+        this.flag = dorsal.equals(1) ? "ESP":  flag;
         this.time = time;
         this.sex = sex;
         this.position = position;
+        this.puntDePas = puntDePas;
     }
 
     public String getName() {
@@ -56,4 +60,9 @@ public class Runner {
         return this.position;
     }
 
+    public String getCio() {
+        return this.flag;
+    }
+
+    public String getPuntDePas(){return this.puntDePas;}
 }

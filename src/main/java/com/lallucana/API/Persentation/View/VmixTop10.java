@@ -16,9 +16,15 @@ public class VmixTop10 extends Vmix {
     @Override
     public void updateInput(List<Runner> runners) throws ErrorRequest {
 
-        this.updateTitle(runners.get(0).getSex());
+        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPuntDePas());
         for (Runner runner : runners) {
-            this.updateRunner(runner);
+            new Thread(()-> {
+                try {
+                    this.updateRunner(runner);
+                } catch (ErrorRequest e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
 
     }
@@ -32,7 +38,7 @@ public class VmixTop10 extends Vmix {
         StringBuffer stringBuffer = new StringBuffer();
         String url = null;
         stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
+        stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
         stringBuffer.append("&SelectedName=Pos" + runner.getPosition() + ".Text&value=");
         stringBuffer.append(runner.getPosition());
@@ -40,7 +46,7 @@ public class VmixTop10 extends Vmix {
         this.getUrl(url);
         stringBuffer = new StringBuffer();
         stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
+        stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
         stringBuffer.append("&SelectedName=Nom" + runner.getPosition() + ".Text&value=");
         stringBuffer.append(runner.getName()+ " "+runner.getSurname());
@@ -48,13 +54,14 @@ public class VmixTop10 extends Vmix {
         this.getUrl(url);
         stringBuffer = new StringBuffer();
         stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input");
+        stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
         stringBuffer.append("&SelectedName=Dors" + runner.getPosition() + ".Text&value=");
         stringBuffer.append(runner.getDorsal());
         url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
         stringBuffer = new StringBuffer();
+
         stringBuffer.append(this.getServer());
         stringBuffer.append("/API/?Function=SetText&Input=");
         stringBuffer.append(this.getInput());
@@ -63,6 +70,9 @@ public class VmixTop10 extends Vmix {
         url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
         stringBuffer = new StringBuffer();
+
+
+
         stringBuffer.append(this.getServer());
         stringBuffer.append("/API/?Function=SetImage&Input=");
         stringBuffer.append(this.getInput());
@@ -74,18 +84,29 @@ public class VmixTop10 extends Vmix {
 
     /**
      * @param sex of runners to show
+     * @param puntDePas last punt
      * @throws ErrorRequest connection error
      */
     @Override
-    public void updateTitle(String sex) throws ErrorRequest {
+    public void updateTitle(String sex, String puntDePas) throws ErrorRequest {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(this.getServer());
         stringBuffer.append("/API/?Function=SetText&Input");
         stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Cat.Text&value=");
+        stringBuffer.append("&SelectedName=Title.Text&value=");
+        stringBuffer.append("TOP ELITE ");
         stringBuffer.append((sex.equals("H") || sex.equals("M")) ? "MAN" : "WOMAN");
         //Preper string buffer for URL request
         String url = stringBuffer.toString().replace(" ", "%20");
+        this.getUrl(url);
+        stringBuffer = new StringBuffer();
+
+        stringBuffer.append(this.getServer());
+        stringBuffer.append("/API/?Function=SetText&Input=");
+        stringBuffer.append(this.getInput());
+        stringBuffer.append("&SelectedName=Cat.Text&value=");
+        stringBuffer.append(puntDePas);
+        url = stringBuffer.toString().replace(" ", "%20");
         this.getUrl(url);
     }
 }

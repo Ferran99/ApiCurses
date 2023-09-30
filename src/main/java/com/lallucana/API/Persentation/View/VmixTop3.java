@@ -16,7 +16,7 @@ public class VmixTop3 extends Vmix{
      */
     @Override
     public void updateInput(List<Runner> runners) throws ErrorRequest {
-        this.updateTitle(runners.get(0).getSex());
+        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPuntDePas());
         for (Runner runner : runners) {
             this.updateRunner(runner);
         }
@@ -67,10 +67,11 @@ public class VmixTop3 extends Vmix{
 
     /**
      * @param sex of runners to show
+     * @param puntDePas las point
      * @throws ErrorRequest connection error
      */
     @Override
-    protected void updateTitle(String sex) throws ErrorRequest {
+    protected void updateTitle(String sex, String puntDePas) throws ErrorRequest {
 
     }
 

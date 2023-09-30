@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by Ferran Castañé on 23/09/2023.
  * Runner GPS class
  */
-public class RunnerGps {
+public class    RunnerGps {
     @JsonProperty("order")
     Integer order;
     @JsonProperty("name")
@@ -18,9 +18,9 @@ public class RunnerGps {
     @JsonProperty("speed")
     String speed;
     @JsonProperty("gap_time")
-    String gapTime;
+    String gap_time;
     @JsonProperty("gap_dist")
-    String gapDistance;
+    String gap_dist;
 
     public Integer getOrder(){
         return this.order;
@@ -43,11 +43,11 @@ public class RunnerGps {
     }
 
     public String getGapTime(){
-        return this.gapTime;
+        return this.gap_time;
     }
 
     public String getGapDistance(){
-        return this.gapDistance;
+        return this.gap_dist;
     }
 
     @Override
@@ -57,8 +57,8 @@ public class RunnerGps {
                 ", name=" + name +
                 ", distance=" + dist +
                 ", speed=" + speed +
-                ", gapTime=" + gapTime +
-                ", gapDistance=" + gapDistance +
+                ", gapTime=" + gap_time +
+                ", gapDistance=" + gap_dist +
                 '}';
     }
 }

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
  * Created by Ferran Castañé on 23/09/2023.
  * Runner Live Trail class
  */
-@JsonIgnoreProperties({"pass", "c", "nat"})
+@JsonIgnoreProperties({"pass", "c", "nat", "prev"})
 
 public class RunnerLiveTrial {
 
@@ -46,7 +46,7 @@ public class RunnerLiveTrial {
     @JacksonXmlProperty(localName = "nextpt")
     private Integer nextPoint;
     @JacksonXmlProperty(localName = "nexth")
-    private Integer nextHour;
+    private String nextHour;
     @JacksonXmlProperty(localName = "nextj")
     private Integer nextJ;
     @JacksonXmlProperty(localName = "finish")
@@ -58,6 +58,8 @@ public class RunnerLiveTrial {
     private String distance;
     private String gapTime;
     private String gapDistance;
+    private Integer position;
+    private String puntDePas;
 
 
     public Integer getDorsal(){
@@ -94,7 +96,7 @@ public class RunnerLiveTrial {
     public String getCio(){
         return this.cio;
     }
-
+    public Integer getPosition(){return this.position;}
     public String getTime(){
         return this.time;
     }
@@ -110,10 +112,31 @@ public class RunnerLiveTrial {
     public void setGapDistance(String gapDistance){
         this.gapDistance = gapDistance;
     }
+    public void setCountry(String country){
+        this.country = country;
+    }
+    public void setCio(String cio){
+        this.cio = cio;
+    }
+    public String getPuntDePas() {
+        return  puntDePas;
+    }
 
+    public Integer getLastPoint(){
+        return this.lastPoint;
+    }
+
+    public void setPuntDePas(String puntDePas){
+        this.puntDePas = puntDePas;
+    }
+    public void setPosition(Integer position){
+        this.position = position;
+    }
 
     @Override
     public String toString(){
         return "Runner: \n" + "Dorsal: " + this.dorsal + "\n" + "Name: " + this.name + "\n" + "Surname: " + this.surname + "\n" + "Sex: " + this.sex + "\n" + "Club: " + this.club + "\n" + "Country: " + this.country + "\n" + "CIO: " + this.cio + "\n" + "Category: " + this.category + "\n" + "PH: " + this.ph + "\n" + "Last Point: " + this.lastPoint + "\n" + "Last Hour: " + this.lastHour + "\n" + "Last J: " + this.lastJ + "\n" + "Time: " + this.time + "\n" + "ID Point: " + this.idPoint + "\n" + "Next Point: " + this.nextPoint + "\n" + "Next Hour: " + this.nextHour + "\n" + "Next J: " + this.nextJ + "\n" + "Finish: " + this.finish + "\n" +this.speed + "\n" + this.distance + "\n" + this.gapTime + "\n" + this.gapDistance + "\n";
     }
+
+
 }
