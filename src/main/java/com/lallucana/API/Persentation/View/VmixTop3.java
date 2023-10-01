@@ -16,7 +16,7 @@ public class VmixTop3 extends Vmix{
      */
     @Override
     public void updateInput(List<Runner> runners) throws ErrorRequest {
-        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPuntDePas());
+        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPointOfPas());
         for (Runner runner : runners) {
             this.updateRunner(runner);
         }

@@ -1,9 +1,7 @@
 package com.lallucana.API.Persentation.View;
 
-import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import com.lallucana.API.Business.Race.Runner;
 import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
-import com.lallucana.API.Persistance.HttpRequest;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class VmixTop10 extends Vmix {
     @Override
     public void updateInput(List<Runner> runners) throws ErrorRequest {
 
-        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPuntDePas());
+        this.updateTitle(runners.get(0).getSex(), runners.get(0).getPointOfPas());
         for (Runner runner : runners) {
             new Thread(()-> {
                 try {
