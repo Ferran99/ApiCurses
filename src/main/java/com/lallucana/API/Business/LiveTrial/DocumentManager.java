@@ -26,7 +26,6 @@ public class DocumentManager implements RunnerLiveTrailObservable {
     private Race race;
     private final RunnerDAO runnerDao;
     private final List<RunnerLiveTrailObserver> runnerObservers = new ArrayList<>();
-    private final HashMap<Integer, RunnerLiveTrial> hashMapRunners = new HashMap<>();
     private final String MAN = "M";
     private final String MAN_ALTERNATIVE = "H";
 
@@ -40,9 +39,6 @@ public class DocumentManager implements RunnerLiveTrailObservable {
         this.runnerDao = new RunnerLiveTrailDAO();
         try {
             this.document = (Document) this.runnerDao.getRunners(this.race.getStartUrl());
-            for (RunnerLiveTrial runner : this.document.getRunners()) {
-                this.hashMapRunners.put(runner.getDorsal(), runner);
-            }
             new Thread(this::updateDocument).start();
         } catch (ErrorRequest e) {
             System.out.println("Error updating Live Trail");
@@ -82,8 +78,9 @@ public class DocumentManager implements RunnerLiveTrailObservable {
      * Update document every minute
      */
     private void updateDocument() {
-        long UPDATE_INTERVAL = 30000;
+        long UPDATE_INTERVAL = 60000;
         Document auxDocument;
+        Map<Integer, String> pointIdToName = new HashMap<>();
         while (true) {
             try {
                 auxDocument = (Document) this.runnerDao.getRunners(this.race.getPointsUrl());
@@ -91,16 +88,18 @@ public class DocumentManager implements RunnerLiveTrailObservable {
                 if (auxDocument != null) {
                     if (!auxDocument.getRunners().equals(this.document.getRunners())) {
                         this.document = auxDocument;
+
+                        for (Point point : this.document.getPoints()) {
+                            pointIdToName.put(point.getId(), point.getName());
+                        }
+
                         for (RunnerLiveTrial runner : this.document.getRunners()) {
-                            for(Point point : this.document.getPoints()){
-                                if (point.getId().equals(runner.getLastPoint())){
-                                    runner.setPuntDePas(point.getName());
-                                }
-                            }
-                            if (this.hashMapRunners.containsKey(runner.getDorsal())) {
-                                this.hashMapRunners.replace(runner.getDorsal(), runner);
+                            String pointName = pointIdToName.get(runner.getLastPoint());
+                            if (pointName != null) {
+                                runner.setPuntDePas(pointName);
                             }
                         }
+
                         this.updateRunners();
                         System.out.println("Live Trail updated");
                     }
@@ -182,22 +181,18 @@ public class DocumentManager implements RunnerLiveTrailObservable {
 
     }
 
-    public HashMap<Integer, RunnerLiveTrial> getRealTimeRunners() {
-        return this.hashMapRunners;
-    }
-
     public RunnerLiveTrial findRunner(Integer doss1) {
         int posM = 1;
         int posF = 1;
-        for(RunnerLiveTrial runnerLiveTrial: this.document.getRunners()){
-            if(runnerLiveTrial.getDorsal().equals(doss1)) {
-                runnerLiveTrial.setPosition(runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE)? posM : posF);
+        for (RunnerLiveTrial runnerLiveTrial : this.document.getRunners()) {
+            if (runnerLiveTrial.getDorsal().equals(doss1)) {
+                runnerLiveTrial.setPosition((runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE) || runnerLiveTrial.getSex().equals(MAN))? posM : posF);
                 return runnerLiveTrial;
             }
 
-            if(runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE)){
+            if (runnerLiveTrial.getSex().equals(MAN_ALTERNATIVE) || runnerLiveTrial.getSex().equals(MAN)) {
                 posM++;
-            }else {
+            } else {
                 posF++;
             }
         }

@@ -15,7 +15,7 @@ public class Point {
     @JacksonXmlProperty(localName = "nc")
     private String alternativeName;
 
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
