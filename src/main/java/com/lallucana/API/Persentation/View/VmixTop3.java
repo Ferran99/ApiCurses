@@ -10,6 +10,7 @@ public class VmixTop3 extends Vmix{
         super(server, input);
     }
 
+    //TODO: Mirar si l'actualització funciona correctament
     /**
      * @param runners
      * @throws ErrorRequest
@@ -28,52 +29,32 @@ public class VmixTop3 extends Vmix{
      */
     @Override
     protected void updateRunner(Runner runner) throws ErrorRequest {
-        StringBuffer stringBuffer = new StringBuffer();
-        String url = null;
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Pos" + runner.getPosition() + ".Text&value=");
-        stringBuffer.append(runner.getPosition());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Nom" + runner.getPosition() + ".Text&value=");
-        stringBuffer.append(runner.getName() + " "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Time" + runner.getPosition() + ".Text&value=");
-        stringBuffer.append(runner.getTime());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
+        updateRunnerData(runner, "Pos", String.valueOf(runner.getPosition()));
+        updateRunnerData(runner, "Nom", runner.getName() + " " + runner.getSurname());
+        updateRunnerData(runner, "Time", runner.getTime());
+        updateImageForRunner(runner, "Flag", runner.getFlag());
+    }
 
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetImage&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Flag" + runner.getPosition() + ".Source&value=");
-        stringBuffer.append(runner.getFlag());
-        url = stringBuffer.toString().replace(" ", "%20");
+    private void updateRunnerData(Runner runner, String key, String value) throws ErrorRequest {
+        String urlTemplate = "%s/API/?Function=SetText&Input=%s&SelectedName=%s%s.Text&value=%s";
+        String url = String.format(urlTemplate, this.getServer(), this.getInput(), key, runner.getPosition(), value).replace(" ", "%20");
         this.getUrl(url);
+    }
 
+    private void updateImageForRunner(Runner runner, String key, String value) throws ErrorRequest {
+        String urlTemplate = "%s/API/?Function=SetImage&Input=%s&SelectedName=%s%s.Source&value=%s";
+        String url = String.format(urlTemplate, this.getServer(), this.getInput(), key, runner.getPosition(), value).replace(" ", "%20");
+        this.getUrl(url);
     }
 
     /**
      * @param sex of runners to show
-     * @param puntDePas las point
+     * @param pointOfPass last point
      * @throws ErrorRequest connection error
      */
     @Override
-    protected void updateTitle(String sex, String puntDePas) throws ErrorRequest {
-
+    protected void updateTitle(String sex, String pointOfPass) throws ErrorRequest {
+        // Implementation of this method...
     }
-
 
 }

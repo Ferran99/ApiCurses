@@ -9,6 +9,13 @@ public class Race {
     private String pointsUrl;
     private String name;
 
+    /**
+     * Instantiates a new Race.
+     *
+     * @param startUrl  the start url
+     * @param pointsUrl the points url
+     * @param name      the name
+     */
     public Race(String startUrl, String pointsUrl,String name){
         this.startUrl = startUrl;
         this.pointsUrl = pointsUrl;
@@ -17,6 +24,7 @@ public class Race {
 
     /**
      * Gets start url.
+     *
      * @return the start url
      */
     public String getStartUrl(){
@@ -25,6 +33,7 @@ public class Race {
 
     /**
      * Gets points url.
+     *
      * @return the points url
      */
     public String getPointsUrl(){
@@ -33,9 +42,9 @@ public class Race {
 
     /**
      * Gets name.
+     *
      * @return the name of the race
      */
-
     public String getName(){
         return this.name;
     }

@@ -5,15 +5,27 @@ import com.lallucana.API.Business.LiveTrial.Runner.RunnerLiveTrial;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The type Runner manager.
+ */
 public class RunnerManager {
     private final List<Runner> runners = new ArrayList<>();
     private final List<Runner> compereRunners = new ArrayList<>();
 
+    /**
+     * Instantiates a new Runner manager.
+     */
     public RunnerManager(){
 
     }
 
 
+    /**
+     * Update runners live trial.
+     *
+     * @param runnerLiveTrial the runner live trial
+     */
     public void updateRunnersLiveTrial(List<RunnerLiveTrial> runnerLiveTrial){
         this.runners.clear();
         int pos = 1;
@@ -23,10 +35,22 @@ public class RunnerManager {
         }
     }
 
+    /**
+     * Get runners list.
+     *
+     * @return the list
+     */
     public List<Runner> getRunners(){
         return this.runners;
     }
 
+    /**
+     * Update compere runners live trial.
+     *
+     * @param runner1 the runner 1
+     * @param runner2 the runner 2
+     * @param runner3 the runner 3
+     */
     public void updateCompereRunnersLiveTrial(RunnerLiveTrial runner1, RunnerLiveTrial runner2, RunnerLiveTrial runner3) {
         this.compereRunners.clear();
         this.compereRunners.add(new Runner(runner1.getName(), runner1.getSurname(), runner1.getDorsal(),
@@ -42,6 +66,11 @@ public class RunnerManager {
                 runner3.getSex(), runner3.getPosition(), runner3.getPuntDePas(), runner3.getGapDistance()));
     }
 
+    /**
+     * Get compere runners live trial list.
+     *
+     * @return the list
+     */
     public List<Runner> getCompereRunnersLiveTrial(){
         return this.compereRunners;
     }

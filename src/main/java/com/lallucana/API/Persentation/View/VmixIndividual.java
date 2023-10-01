@@ -5,12 +5,24 @@ import com.lallucana.API.Persistance.Exceptions.ErrorRequest;
 
 import java.util.List;
 
+/**
+ * The type Vmix individual.
+ */
 public class VmixIndividual  extends Vmix{
 
     private Integer input2;
     private Integer input3;
     private  Integer input4;
 
+    /**
+     * Instantiates a new Vmix individual.
+     *
+     * @param server the server
+     * @param input  the input
+     * @param input2 the input 2
+     * @param input3 the input 3
+     * @param input4 the input 4
+     */
     public VmixIndividual(String server, Integer input, Integer input2, Integer input3, Integer input4) {
         super(server, input);
         this.input2 = input2;
@@ -19,275 +31,44 @@ public class VmixIndividual  extends Vmix{
     }
 
 
-
-
-    /**
-     * @param runners
-     * @throws ErrorRequest
-     */
-    @Override
+    //TODO: Mirar si l'actualització funciona correctament
     public void updateInput(List<Runner> runners) throws ErrorRequest {
-        Runner runner = runners.get(0);
-        StringBuffer stringBuffer = new StringBuffer();
-        String url = null;
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Dors.Text&value=");
-        stringBuffer.append(runner.getDorsal());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Pais.Text&value=");
-        stringBuffer.append(runner.getCio());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Nom.Text&value=");
-        stringBuffer.append(runner.getName()+ " "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Club.Text&value=");
-        stringBuffer.append(runner.getClub());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetImage&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Flag.Source&value=");
-        stringBuffer.append(runner.getFlag());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.getInput());
-        stringBuffer.append("&SelectedName=Pos.Text&value=");
-        stringBuffer.append(runner.getPosition());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        updateInput2(runners.get(1));
-        updateInput3(runners.get(1));
-        updateInput4(runners.get(2));
+        setRunnerDetails(runners.get(0), this.getInput());
+        setRunnerDetails(runners.get(1), this.input2);
+        setRunnerDetails2(runners.get(1), this.input3);
+        setRunnerDetails2(runners.get(2), this.input4);
     }
 
-    private void updateInput2(Runner runner) throws ErrorRequest {
-        StringBuffer stringBuffer = new StringBuffer();
-        String url = null;
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Dors.Text&value=");
-        stringBuffer.append(runner.getDorsal());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Pais.Text&value=");
-        stringBuffer.append(runner.getCio());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Club.Text&value=");
-        stringBuffer.append(runner.getClub());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Nom.Text&value=");
-        stringBuffer.append(runner.getName()+ " "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        stringBuffer.append("/API/?Function=SetImage&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Flag.Source&value=");
-        stringBuffer.append(runner.getFlag());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input2);
-        stringBuffer.append("&SelectedName=Pos.Text&value=");
-        stringBuffer.append(runner.getPosition());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
+    private void setRunnerDetails(Runner runner, Integer input) throws ErrorRequest {
+        sendRequest(input, "Dors.Text", runner.getDorsal().toString());
+        sendRequest(input, "Pais.Text", runner.getCio());
+        sendRequest(input, "Nom.Text", runner.getName() + " " + runner.getSurname());
+        sendRequest(input, "Club.Text", runner.getClub());
+        sendRequestForImage(input, "Flag.Source", runner.getFlag());
+        sendRequest(input, "Pos.Text", runner.getPosition().toString());
     }
 
-    private void updateInput3(Runner runner) throws ErrorRequest {
-        StringBuffer stringBuffer = new StringBuffer();
-        String url = null;
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Dors2.Text&value=");
-        stringBuffer.append(runner.getDorsal());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Pais2.Text&value=");
-        stringBuffer.append(runner.getCio());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Nom2.Text&value=");
-        stringBuffer.append(runner.getName()+ " "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetImage&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Flag2.Source&value=");
-        stringBuffer.append(runner.getFlag());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Club2.Text&value=");
-        stringBuffer.append(runner.getClub());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=BattleTime.Text&value=");
-        stringBuffer.append(runner.getTime());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input3);
-        stringBuffer.append("&SelectedName=Battle.Text&value=");
-        stringBuffer.append("BATTLE for "+(runner.getPosition() -1));
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
+    private void setRunnerDetails2(Runner runner, Integer input) throws ErrorRequest {
+        sendRequest(input, "Dors2.Text", runner.getDorsal().toString());
+        sendRequest(input, "Pais2.Text", runner.getCio());
+        sendRequest(input, "Nom2.Text", runner.getName() + " " + runner.getSurname());
+        sendRequestForImage(input, "Flag2.Source", runner.getFlag());
+        sendRequest(input, "Club2.Text", runner.getClub());
+        sendRequest(input, "BattleTime.Text", runner.getTime());
+        sendRequest(input, "Battle.Text", "BATTLE for " + (runner.getPosition() - 1));
     }
 
-    private void updateInput4(Runner runner) throws ErrorRequest {
-        StringBuffer stringBuffer = new StringBuffer();
-        String url = null;
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Dors2.Text&value=");
-        stringBuffer.append(runner.getDorsal());
-        url = stringBuffer.toString().replace(" ", "%20");
+    private void sendRequest(Integer input, String fieldName, String value) throws ErrorRequest {
+        String url = String.format("%s/API/?Function=SetText&Input=%d&SelectedName=%s&value=%s",
+                this.getServer(), input, fieldName, value).replace(" ", "%20");
         this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Pais2.Text&value=");
-        stringBuffer.append(runner.getCio());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Club2.Text&value=");
-        stringBuffer.append(runner.getClub());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Nom2.Text&value=");
-        stringBuffer.append(runner.getName()+" "+runner.getSurname());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetImage&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Flag2.Source&value=");
-        stringBuffer.append(runner.getFlag());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=BattleTime.Text&value=");
-        stringBuffer.append(runner.getTime());
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-
-        stringBuffer.append(this.getServer());
-        stringBuffer.append("/API/?Function=SetText&Input=");
-        stringBuffer.append(this.input4);
-        stringBuffer.append("&SelectedName=Battle.Text&value=");
-        stringBuffer.append("BATTLE for "+(runner.getPosition()));
-        url = stringBuffer.toString().replace(" ", "%20");
-        this.getUrl(url);
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(this.getServer());
     }
 
+    private void sendRequestForImage(Integer input, String fieldName, String image) throws ErrorRequest {
+        String url = String.format("%s/API/?Function=SetImage&Input=%d&SelectedName=%s&value=%s",
+                this.getServer(), input, fieldName, image).replace(" ", "%20");
+        this.getUrl(url);
+    }
     /**
      * @param runner
      * @throws ErrorRequest
