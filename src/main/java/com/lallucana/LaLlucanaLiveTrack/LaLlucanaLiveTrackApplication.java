@@ -18,7 +18,7 @@ public class LaLlucanaLiveTrackApplication {
 
 	public static void main(String[] args) {
 		String pointUrlUltra = "https://ultrapirineu.livetrail.net/teteCourse.php?course=ultra&cat=scratch&mode=full";
-		String startUrlUltra = "https://penyagolosa.livetrail.net/lstCoureurs.php?course=mim&cat=all&mode=full";
+		String startUrlUltra = "https://ultrapirineu.livetrail.net/lstPartants.php?course=ultra&cat=all&mode=full";
 		String gpsUrl = "http://192.168.100.100:8000/gps.json";
 		String VMIX_SERVER = "http://192.168.100.100:8088";
 		String pointUrlMarathon = "https://ultrapirineu.livetrail.net/teteCourse.php?course=ultra&cat=scratch&mode=full";
